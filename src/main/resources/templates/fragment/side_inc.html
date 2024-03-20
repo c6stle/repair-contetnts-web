@@ -1,0 +1,43 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="side_inc">
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/">
+                <i class="bi bi-grid"></i>
+                <span>Home</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <div>
+                <a class="nav-link collapsed" data-bs-target="#testMenu" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Test Main</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="testMenu" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a onclick="fnClickMenu('/open/view/test1')" href="#">
+                            <i class="bi bi-circle"></i><span>test menu1</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="fnClickMenu('/open/view/test2')" href="#">
+                            <i class="bi bi-circle"></i><span>test menu2</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</aside><!-- End Sidebar-->
+
+<script type="text/javascript">
+
+</script>
+</th:block>
+</html>

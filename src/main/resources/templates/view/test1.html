@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/head_inc :: head_inc}"/>
+    <title>Test</title>
+</head>
+<body>
+<main id="main" class="main">
+    <div class="pagetitle" style="display:flex;justify-content: space-between">
+        <div>
+            <h1>Test</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item">test menu1</li>
+                </ol>
+            </nav>
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="btn btn-outline-primary" onclick="jsonControllerTest();">test1</button>
+        </div>
+    </div>
+    <section class="section">
+        <div class="row">
+        </div>
+    </section>
+</main>
+
+<script type="text/javascript">
+    function jsonControllerTest() {
+        $.ajax({
+            url : '/json/test/method1',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                username: 'user',
+                password: 'password!'
+            }),
+            success: function(rtn) {
+                console.log(rtn);
+                alert("success");
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
