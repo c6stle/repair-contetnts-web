@@ -21,11 +21,11 @@ public class Repair extends Base {
     @GeneratedValue
     private Long repairIdx;
 
-    private String productVal;
+    private String productVal;//제품번호
 
-    private String specificVal;
+    private String specificVal;//고유번호
 
-    private String repairContents;
+    private String repairContents;//수리내용
 
     private Long price;
 

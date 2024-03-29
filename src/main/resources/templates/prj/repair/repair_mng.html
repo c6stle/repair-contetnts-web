@@ -49,22 +49,32 @@
                         <p><code>최신순</code>으로 출력됩니다.</p>
                         <!-- Bordered Table -->
                         <table class="table table-bordered">
+                            <colgroup>
+                                <col style="width:15%;" />
+                                <col style="width:15%;" />
+                                <col style="width:15%;" />
+                                <col style="width:35%;" />
+                                <col style="width:10%;" />
+                                <col style="width:10%;" />
+                            </colgroup>
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Position</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">Start Date</th>
+                                <th scope="col">날짜</th>
+                                <th scope="col">제품번호</th>
+                                <th scope="col">고유번호</th>
+                                <th scope="col">수리내용</th>
+                                <th scope="col">가격</th>
+                                <th scope="col">매장</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Brandon Jacob</td>
-                                <td>Designer</td>
-                                <td>28</td>
-                                <td>2016-05-25</td>
+                            <tr th:each="repair, stat : ${repairList}">
+                                <td th:text="${repair.receiveDt}">-</td>
+                                <td th:text="${repair.productVal}">-</td>
+                                <td th:text="${repair.specificVal}">-</td>
+                                <td th:text="${repair.repairContents}">-</td>
+                                <td th:text="${repair.price}">-</td>
+                                <td th:text="${repair.storeNm}">-</td>
                             </tr>
                             </tbody>
                         </table>

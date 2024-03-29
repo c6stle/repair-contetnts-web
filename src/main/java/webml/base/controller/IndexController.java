@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class MainController {
+public class IndexController {
 
     private final MenuService menuService;
 
