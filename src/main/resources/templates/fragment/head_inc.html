@@ -50,13 +50,13 @@
     <script th:src="@{/assets/js/main.js}"></script>
 
     <script type="text/javascript">
-        // $(document).ajaxSend(function(event, req) {
-        //     try {
-        //         req.setRequestHeader("nowURL", window.location.pathname);
-        //     } catch (e) {
-        //         console.log(e);
-        //     }
-        // });
+        $(document).ajaxSend(function(event, req) {
+            try {
+                req.setRequestHeader("nowURL", window.location.pathname);
+            } catch (e) {
+                console.log(e);
+            }
+        });
 
         $(document).ajaxError(function(event, rtn) {
             try {

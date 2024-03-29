@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{fragment/head_inc :: head_inc}"/>
-    <title>AUTHORITY</title>
+    <title>J&S Admin</title>
 </head>
 
 <body>
@@ -30,6 +30,11 @@
 
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        fnClickMenu("/main");
+    });
+
     function fnClickMenu(url) {
         console.log(url);
         $('#main_contents').attr('src', url);
