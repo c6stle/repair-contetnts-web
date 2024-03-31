@@ -35,4 +35,6 @@ public class Repair extends Base {
 
     //수령 날짜
     private LocalDateTime receiveDt;
+
+    private String delYn;
 }

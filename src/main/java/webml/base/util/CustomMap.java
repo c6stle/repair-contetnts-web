@@ -1,4 +1,4 @@
-package webml.base.core.util;
+package webml.base.util;
 
 import lombok.NoArgsConstructor;
 

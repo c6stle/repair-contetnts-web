@@ -9,7 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import webml.base.core.exception.MessageException;
-import webml.base.core.util.CustomMap;
+import webml.base.util.CustomMap;
 import webml.base.dto.MemberDto;
 import webml.base.dto.NewMemberDto;
 import webml.base.service.AuthorityService;

@@ -3,7 +3,7 @@ package webml.base.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import webml.base.core.util.CustomMap;
+import webml.base.util.CustomMap;
 import webml.base.entity.Menu;
 import webml.base.repository.MenuRepository;
 import webml.base.core.exception.MessageException;

@@ -1,9 +1,6 @@
 package webml.prj.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import webml.prj.entity.common.Base;
 
@@ -20,4 +17,6 @@ public class Store extends Base {
     private Long storeIdx;
 
     private String storeNm;
+
+    private String storeAddress;
 }
