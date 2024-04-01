@@ -1,7 +1,6 @@
 package webml.base.repository;
 
 import webml.base.entity.Menu;
-import webml.base.repository.impl.MenuCustomRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 

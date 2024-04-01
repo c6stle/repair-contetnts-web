@@ -1,4 +1,4 @@
-package webml.base.repository.impl;
+package webml.base.repository;
 
 import webml.base.entity.Menu;
 

@@ -1,7 +1,9 @@
 package webml.prj.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import webml.prj.entity.common.Base;
 
 import java.time.LocalDateTime;
@@ -34,6 +36,8 @@ public class Repair extends Base {
     private Store store;
 
     //수령 날짜
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime receiveDt;
 
     private String delYn;

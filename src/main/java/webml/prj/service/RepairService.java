@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import webml.base.util.PagingInfo;
 import webml.prj.dto.RepairDto;
+import webml.prj.dto.RepairSearchDto;
 import webml.prj.repository.RepairRepository;
 
 import java.util.List;
@@ -18,12 +20,12 @@ public class RepairService {
 
     private final RepairRepository repairRepository;
 
-    public long getRepairListCnt() {
-        return repairRepository.count();
+    public long getRepairListCnt(RepairSearchDto searchDto) {
+        return repairRepository.countCond(searchDto);
     }
 
-    public List<RepairDto> getRepairList() {
-        return repairRepository.findAll().stream().map(RepairDto::new).collect(Collectors.toList());
+    public List<RepairDto> getRepairList(PagingInfo pagingInfo, RepairSearchDto searchDto) {
+        return repairRepository.searchCond(pagingInfo, searchDto).stream().map(RepairDto::new).collect(Collectors.toList());
     }
 
 }

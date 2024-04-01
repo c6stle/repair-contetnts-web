@@ -15,10 +15,12 @@ public class PagingInfo {
     private int prevGroupStartPageNum;
     private int nextGroupStartPageNum;
     private int lastGroupStartPageNum;
-    private ArrayList<int> list = null;
+    private ArrayList<Integer> list = null;
 
     public PagingInfo(long totalCnt, int pageNum, int pageSize) {
         this.totalCnt = totalCnt;
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
         if (pageNum != 0) {
             this.totalPageNum = totalCnt / (long)pageSize;
             if (totalCnt % pageSize > 0) {
@@ -28,15 +30,15 @@ public class PagingInfo {
 
         this.prevGroupStartPageNum = 0;
         this.nextGroupStartPageNum = 0;
-        int nowGroupStartPageNum = (pageNum - 1) / this.pageGroupSize * this.pageSize + 1;
-        this.prevGroupStartPageNum = nowGroupStartPageNum - this.pageSize;
-        this.nextGroupStartPageNum = nowGroupStartPageNum + this.pageSize;
+        int nowGroupStartPageNum = (pageNum - 1) / this.pageGroupSize * this.pageGroupSize + 1;
+        this.prevGroupStartPageNum = nowGroupStartPageNum - this.pageGroupSize;
+        this.nextGroupStartPageNum = nowGroupStartPageNum + this.pageGroupSize;
         if (this.prevGroupStartPageNum < 0) {
             this.prevGroupStartPageNum = 1;
         }
 
         if (pageSize > 0 && totalCnt > 0) {
-            this.list = new ArrayList<int>();
+            this.list = new ArrayList<Integer>();
             for (int i = 0; i < this.pageGroupSize; ++i) {
                 int nowPage = i + nowGroupStartPageNum;
                 if (this.totalPageNum >= nowPage) {

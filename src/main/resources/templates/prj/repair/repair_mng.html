@@ -45,20 +45,57 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
+                        <form th:action="@{/repair}" th:object="${searchForm}" method="GET" id="searchForm">
+                            <input type="hidden" name="pageNum" id="pageNum" th:field="*{pageNum}">
+                            <div class="row" style="margin-top:20px;">
+                                <label for="beginDt" style="text-align: right;" class="col-md-1 col-form-label">날짜</label>
+                                <div class="col-md-2">
+                                    <input type="date" class="form-control" id="beginDt" title="시작날짜" th:field="*{beginDt}">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="date" class="form-control" id="endDt" title="종료날짜" th:field="*{endDt}">
+                                </div>
+
+                                <div class="col-md-1"></div>
+
+                                <label for="selectPartner" style="text-align: right;" class="col-md-1 col-form-label">거래처</label>
+                                <div class="col-md-4">
+                                    <select class="form-select" id="selectPartner" name="partnerIdx">
+                                        <option value="">선택</option>
+                                        <option th:each="partner : ${partnerList}" th:value="${partner.partnerIdx}" th:text="${partner.partnerNm}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1" style="text-align: right;">
+                                    <button type="button" class="btn btn-outline-primary" onclick="fnSearch(1);">검색</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
                         <h5 class="card-title">수리내역</h5>
                         <p><code>최신순</code>으로 출력됩니다.</p>
                         <!-- Bordered Table -->
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="repairTable">
                             <colgroup>
+                                <col style="width:10%;" />
                                 <col style="width:15%;" />
-                                <col style="width:15%;" />
-                                <col style="width:15%;" />
+                                <col style="width:10%;" />
+                                <col style="width:10%;" />
                                 <col style="width:35%;" />
                                 <col style="width:10%;" />
                                 <col style="width:10%;" />
                             </colgroup>
                             <thead>
                             <tr>
+                                <th scope="col">거래처</th>
                                 <th scope="col">날짜</th>
                                 <th scope="col">제품번호</th>
                                 <th scope="col">고유번호</th>
@@ -68,17 +105,46 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="repair, stat : ${repairList}">
-                                <td th:text="${repair.receiveDt}">-</td>
+                            <tr th:if="${repairList.size eq 0}">
+                                <td colspan="6">조회된 데이터가 없습니다.</td>
+                            </tr>
+                            <tr th:unless="${repairList.size eq 0}" th:each="repair, stat : ${repairList}">
+                                <td th:text="${repair.partnerNm}">-</td>
+                                <td th:text="${#temporals.format(repair.receiveDt, 'yyyy-MM-dd HH:mm:ss')}">-</td>
                                 <td th:text="${repair.productVal}">-</td>
                                 <td th:text="${repair.specificVal}">-</td>
                                 <td th:text="${repair.repairContents}">-</td>
-                                <td th:text="${repair.price}">-</td>
+                                <td th:text="${#numbers.formatInteger(repair.price, 3, 'COMMA')}">-</td>
                                 <td th:text="${repair.storeNm}">-</td>
                             </tr>
                             </tbody>
                         </table>
                         <!-- End Bordered Table -->
+
+                        <nav aria-label="Page" id="nav-paging">
+                            <ul class="pagination" style="justify-content: center;">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" th:onclick="|fnSearch(1)|">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Previous" href="#">
+                                        <span aria-hidden="true" th:onclick="|fnSearch('@{${pagingInfo.prevGroupStartPageNum}}')|">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li th:each="page : ${pagingInfo.list}" class="page-item">
+                                    <a th:class="${page eq pagingInfo.pageNum ? 'page-link active' : 'page-link'}" href="#" th:text="${page}" th:onclick="|fnSearch('@{${page}}')|"></a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" aria-label="Next" href="#">
+                                        <span aria-hidden="true" th:onclick="|fnSearch('@{${pagingInfo.nextGroupStartPageNum}}')|">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" th:onclick="|fnSearch('@{${pagingInfo.lastGroupStartPageNum}}')|">Last</a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </div>
                 </div>
             </div>
@@ -89,8 +155,18 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
-
+        $('#beginDt, #endDt').on("change", function() {
+            console.log($(this).val());
+        });
     });
+
+    function fnSearch(pageNum) {
+        if (pageNum == null) {
+            pageNum = 1;
+        }
+        $('#pageNum').val(pageNum);
+        $('#searchForm').submit();
+    }
 
 </script>
 </html>

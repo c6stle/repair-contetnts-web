@@ -4,6 +4,7 @@ import webml.base.entity.Menu;
 import webml.base.entity.QMenu;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import webml.base.repository.MenuCustomRepository;
 
 import java.util.Collection;
 import java.util.List;
