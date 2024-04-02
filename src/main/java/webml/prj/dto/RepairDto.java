@@ -1,8 +1,6 @@
 package webml.prj.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import webml.prj.entity.Repair;
 
 import java.time.LocalDateTime;
@@ -24,9 +22,6 @@ public class RepairDto {
     private String specificVal;
     private String repairContents;
     private Long price;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime receiveDt;
 
     public RepairDto(Repair repair) {

@@ -48,7 +48,7 @@ public class RepairRepositoryImpl implements RepairRepositoryCustom {
     }
 
     private Predicate receiveDtBetween(String beginDt, String endDt) {
-        if (beginDt == null || endDt == null) {
+        if ((beginDt == null || endDt == null) || ("".equals(beginDt) || "".equals(endDt))) {
             return null;
         } else {
             StringExpression format = Expressions.stringTemplate("FUNCTION('TO_CHAR', {0}, 'yyyy-MM-dd HH:mm:ss')", QRepair.repair.receiveDt);

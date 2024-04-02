@@ -36,7 +36,7 @@
             </nav>
         </div>
         <div style="text-align: right;">
-            <button type="button" class="btn btn-outline-primary" onclick="fnUpdateMenuAuthority();">일괄저장</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnUpdateMenuAuthority();">EXCEL</button>
         </div>
     </div><!-- End Page Title -->
 
@@ -60,8 +60,8 @@
 
                                 <label for="selectPartner" style="text-align: right;" class="col-md-1 col-form-label">거래처</label>
                                 <div class="col-md-4">
-                                    <select class="form-select" id="selectPartner" name="partnerIdx">
-                                        <option value="">선택</option>
+                                    <select class="form-select" id="selectPartner" th:field="*{partnerIdx}">
+                                        <option value="" selected>선택</option>
                                         <option th:each="partner : ${partnerList}" th:value="${partner.partnerIdx}" th:text="${partner.partnerNm}"></option>
                                     </select>
                                 </div>
@@ -80,8 +80,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">수리내역</h5>
-                        <p><code>최신순</code>으로 출력됩니다.</p>
+                        <p><code th:text="${pagingInfo.totalCnt}">0</code> 건</p>
                         <!-- Bordered Table -->
                         <table class="table table-bordered" id="repairTable">
                             <colgroup>
@@ -152,11 +151,10 @@
     </section>
 
 </main>
-</body>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#beginDt, #endDt').on("change", function() {
-            console.log($(this).val());
+        $('#selectPartner').on("change", function() {
+            fnSearch(1);
         });
     });
 
@@ -169,4 +167,5 @@
     }
 
 </script>
+</body>
 </html>

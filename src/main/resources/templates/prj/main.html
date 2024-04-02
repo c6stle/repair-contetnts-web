@@ -1,10 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:replace="~{fragment/head_inc :: head_inc}"/>
+    <title>메인페이지</title>
 </head>
 <body>
-<h1>메인페이지입니다.</h1>
+<main id="main" class="main">
+    <div class="pagetitle" style="display:flex;justify-content: space-between">
+        <div>
+            <h1>HOME</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item">dashboard</li>
+                </ol>
+            </nav>
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="btn btn-outline-primary" onclick="fnSaveRepair();">저장</button>
+        </div>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">수리내역 등록 폼</h5>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="partnerIdx" style="text-align: right;">거래처</label>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Default select example" id="partnerIdx">
+                                    <option value="" selected>선택</option>
+                                    <option th:each="partner : ${partnerList}" th:value="${partner.partnerIdx}" th:text="${partner.partnerNm}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="receiveDt" class="col-sm-2 col-form-label" style="text-align: right;">날짜</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" id="receiveDt">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="productVal" class="col-sm-2 col-form-label" style="text-align: right;">제품번호</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="productVal">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="specificVal" class="col-sm-2 col-form-label" style="text-align: right;">고유번호</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="specificVal">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="repairContents" class="col-sm-2 col-form-label" style="text-align: right;">수리내용</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="repairContents">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="price" class="col-sm-2 col-form-label" style="text-align: right;">가격</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="price">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="storeIdx" style="text-align: right;">매장</label>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Default select example" id="storeIdx">
+                                    <option value="" selected>선택</option>
+                                    <option th:each="store : ${storeList}" th:value="${store.storeIdx}" th:text="${store.storeNm}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+
+    function fnSaveRepair() {
+        if (confirm("저장하시겠습니까?")) {
+            $.ajax({
+                url : "/repair",
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    partnerIdx: $('#partnerIdx').val(),
+                    receiveDt: $('#receiveDt').val(),
+                    productVal: $('#productVal').val(),
+                    specificVal: $('#specificVal').val(),
+                    repairContents: $('#repairContents').val(),
+                    price: $('#price').val(),
+                    storeIdx: $('#storeIdx').val()
+                }),
+                success: function(rtn) {
+                    alert(rtn.message);
+                    $('#productVal').val('')
+                    $('#specificVal').val('')
+                    $('#repairContents').val('');
+                    $('#price').val(0);
+                }
+            })
+        }
+    }
+</script>
 </body>
 </html>

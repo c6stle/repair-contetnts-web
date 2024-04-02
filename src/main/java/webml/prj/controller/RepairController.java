@@ -1,16 +1,22 @@
 package webml.prj.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import webml.base.core.exception.MessageException;
 import webml.base.util.PagingInfo;
+import webml.prj.dto.RepairRegDto;
 import webml.prj.dto.RepairSearchDto;
 import webml.prj.service.PartnerService;
 import webml.prj.service.RepairService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -28,12 +34,34 @@ public class RepairController {
         int pageNum = searchDto.getPageNum() == null ? 1 : searchDto.getPageNum();
         log.info("param : {}", searchDto);
 
-        PagingInfo pagingInfo = new PagingInfo(repairService.getRepairListCnt(searchDto), pageNum, 20);
+        long totalCnt = repairService.getRepairListCnt(searchDto);
+        PagingInfo pagingInfo = new PagingInfo(totalCnt, pageNum, 20);
 
         model.addAttribute("pagingInfo", pagingInfo);
         model.addAttribute("partnerList", partnerService.getPartnerList());
         model.addAttribute("repairList", repairService.getRepairList(pagingInfo, searchDto));
         return "prj/repair/repair_mng";
+    }
+
+    @ResponseBody
+    @PostMapping
+    public Map<String, Object> regRepair(@RequestBody @Valid RepairRegDto repairRegDto, BindingResult bindingResult) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            if (bindingResult.hasErrors()) {
+                FieldError error = bindingResult.getFieldErrors().get(0);
+                throw new MessageException(error.getDefaultMessage());
+            }
+
+            if (repairRegDto.getReceiveDt() == null) {
+                repairRegDto.setReceiveDtToday();
+            }
+            repairService.regRepair(repairRegDto);
+        } catch (Exception e) {
+            log.error("", e);
+            throw new MessageException(e.getMessage());
+        }
+        return rtnMap;
     }
 
 }
