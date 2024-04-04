@@ -6,7 +6,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import webml.prj.entity.common.Base;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -36,9 +36,9 @@ public class Repair extends Base {
     private Store store;
 
     //수령 날짜
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime receiveDt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate receiveDt;
 
     private String delYn;
 }

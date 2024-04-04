@@ -90,6 +90,9 @@
     });
 
     function fnSaveRepair() {
+
+        console.log($('#storeIdx').val());
+
         if (confirm("저장하시겠습니까?")) {
             $.ajax({
                 url : "/repair",

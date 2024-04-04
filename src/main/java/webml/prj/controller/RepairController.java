@@ -57,6 +57,7 @@ public class RepairController {
                 repairRegDto.setReceiveDtToday();
             }
             repairService.regRepair(repairRegDto);
+            rtnMap.put("message", "저장되었습니다.");
         } catch (Exception e) {
             log.error("", e);
             throw new MessageException(e.getMessage());

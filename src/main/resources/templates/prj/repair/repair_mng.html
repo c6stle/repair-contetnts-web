@@ -36,6 +36,7 @@
             </nav>
         </div>
         <div style="text-align: right;">
+            <button type="button" class="btn btn-outline-primary" onclick="fnRegRepairPage('/main');">신규등록</button>
             <button type="button" class="btn btn-outline-primary" onclick="fnUpdateMenuAuthority();">EXCEL</button>
         </div>
     </div><!-- End Page Title -->
@@ -109,7 +110,7 @@
                             </tr>
                             <tr th:unless="${repairList.size eq 0}" th:each="repair, stat : ${repairList}">
                                 <td th:text="${repair.partnerNm}">-</td>
-                                <td th:text="${#temporals.format(repair.receiveDt, 'yyyy-MM-dd HH:mm:ss')}">-</td>
+                                <td th:text="${#temporals.format(repair.receiveDt, 'yyyy-MM-dd')}">-</td>
                                 <td th:text="${repair.productVal}">-</td>
                                 <td th:text="${repair.specificVal}">-</td>
                                 <td th:text="${repair.repairContents}">-</td>
@@ -164,6 +165,10 @@
         }
         $('#pageNum').val(pageNum);
         $('#searchForm').submit();
+    }
+
+    function fnRegRepairPage(url) {
+        window.parent.fnClickMenu(url);
     }
 
 </script>

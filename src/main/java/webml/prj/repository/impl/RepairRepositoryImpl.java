@@ -51,9 +51,10 @@ public class RepairRepositoryImpl implements RepairRepositoryCustom {
         if ((beginDt == null || endDt == null) || ("".equals(beginDt) || "".equals(endDt))) {
             return null;
         } else {
-            StringExpression format = Expressions.stringTemplate("FUNCTION('TO_CHAR', {0}, 'yyyy-MM-dd HH:mm:ss')", QRepair.repair.receiveDt);
-            beginDt = beginDt + " 00:00:00";
-            endDt = endDt + " 23:59:59";
+            //StringExpression format = Expressions.stringTemplate("FUNCTION('TO_CHAR', {0}, 'yyyy-MM-dd HH:mm:ss')", QRepair.repair.receiveDt);
+            //beginDt = beginDt + " 00:00:00";
+            //endDt = endDt + " 23:59:59";
+            StringExpression format = Expressions.stringTemplate("FUNCTION('TO_CHAR', {0}, 'yyyy-MM-dd')", QRepair.repair.receiveDt);
             return format.between(beginDt, endDt);
         }
     }

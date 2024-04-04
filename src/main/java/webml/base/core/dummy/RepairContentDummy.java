@@ -9,7 +9,7 @@ import webml.prj.repository.RepairRepository;
 import webml.prj.repository.StoreRepository;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 //@Component
 @RequiredArgsConstructor
@@ -51,7 +51,7 @@ public class RepairContentDummy {
             Repair repair = Repair.builder()
                     .repairIdx(Long.parseLong(String.valueOf(i)))
                     .repairContents("인그레빙, 폴리싱")
-                    .receiveDt(LocalDateTime.now())
+                    .receiveDt(LocalDate.now())
                     .delYn("N")
                     .partner(partner)
                     .store(store)
@@ -65,7 +65,7 @@ public class RepairContentDummy {
             Repair repair = Repair.builder()
                     .repairIdx(Long.parseLong(String.valueOf(i)))
                     .repairContents("사이즈 조절")
-                    .receiveDt(LocalDateTime.now())
+                    .receiveDt(LocalDate.now())
                     .delYn("N")
                     .partner(partner)
                     .store(store2)

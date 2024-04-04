@@ -3,7 +3,7 @@ package webml.prj.dto;
 import lombok.*;
 import webml.prj.entity.Repair;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -22,7 +22,7 @@ public class RepairDto {
     private String specificVal;
     private String repairContents;
     private Long price;
-    private LocalDateTime receiveDt;
+    private LocalDate receiveDt;
 
     public RepairDto(Repair repair) {
         this.partnerIdx = repair.getPartner().getPartnerIdx();
