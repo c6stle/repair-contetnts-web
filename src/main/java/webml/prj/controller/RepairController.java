@@ -10,10 +10,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import webml.base.core.exception.MessageException;
 import webml.base.util.PagingInfo;
-import webml.prj.dto.RepairRegDto;
+import webml.prj.dto.RepairDto;
 import webml.prj.dto.RepairSearchDto;
 import webml.prj.service.PartnerService;
 import webml.prj.service.RepairService;
+import webml.prj.service.StoreService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class RepairController {
     private final RepairService repairService;
 
     private final PartnerService partnerService;
+
+    private final StoreService storeService;
 
     @GetMapping
     public String getRepairList(@ModelAttribute(name = "searchForm") RepairSearchDto searchDto, Model model){
@@ -45,7 +48,7 @@ public class RepairController {
 
     @ResponseBody
     @PostMapping
-    public Map<String, Object> regRepair(@RequestBody @Valid RepairRegDto repairRegDto, BindingResult bindingResult) {
+    public Map<String, Object> regRepair(@RequestBody @Valid RepairDto repairRegDto, BindingResult bindingResult) {
         Map<String, Object> rtnMap = new HashMap<>();
         try {
             if (bindingResult.hasErrors()) {
@@ -57,6 +60,50 @@ public class RepairController {
                 repairRegDto.setReceiveDtToday();
             }
             repairService.regRepair(repairRegDto);
+            rtnMap.put("message", "저장되었습니다.");
+        } catch (Exception e) {
+            log.error("", e);
+            throw new MessageException(e.getMessage());
+        }
+        return rtnMap;
+    }
+
+    @GetMapping("/{repairIdx}")
+    public String getRepairInfo(@PathVariable Long repairIdx, Model model){
+        model.addAttribute("partnerList", partnerService.getPartnerList());
+        model.addAttribute("storeList", storeService.getStoreList());
+        model.addAttribute("repairInfo", repairService.getRepairInfo(repairIdx));
+        return "prj/repair/repair_edit";
+    }
+
+    @ResponseBody
+    @PostMapping("/{repairIdx}")
+    public Map<String, Object> updateRepair(@PathVariable Long repairIdx,
+                                            @RequestBody @Valid RepairDto repairUpdateDto,
+                                            BindingResult bindingResult) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            if (bindingResult.hasErrors()) {
+                FieldError error = bindingResult.getFieldErrors().get(0);
+                throw new MessageException(error.getDefaultMessage());
+            }
+
+            repairUpdateDto.setRepairIdx(repairIdx);
+            repairService.updateRepair(repairUpdateDto);
+            rtnMap.put("message", "저장되었습니다.");
+        } catch (Exception e) {
+            log.error("", e);
+            throw new MessageException(e.getMessage());
+        }
+        return rtnMap;
+    }
+
+    @ResponseBody
+    @DeleteMapping("/{repairIdx}")
+    public Map<String, Object> updateRepair(@PathVariable Long repairIdx) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            repairService.deleteRepair(repairIdx);
             rtnMap.put("message", "저장되었습니다.");
         } catch (Exception e) {
             log.error("", e);

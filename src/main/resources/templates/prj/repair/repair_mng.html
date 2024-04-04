@@ -113,7 +113,9 @@
                                 <td th:text="${#temporals.format(repair.receiveDt, 'yyyy-MM-dd')}">-</td>
                                 <td th:text="${repair.productVal}">-</td>
                                 <td th:text="${repair.specificVal}">-</td>
-                                <td th:text="${repair.repairContents}">-</td>
+                                <td>
+                                    <a href="#" class="text-primary fw-bold" th:text="${repair.repairContents}" th:onclick="|fnGoDetail('@{${repair.repairIdx}}')|">-</a>
+                                </td>
                                 <td th:text="${#numbers.formatInteger(repair.price, 3, 'COMMA')}">-</td>
                                 <td th:text="${repair.storeNm}">-</td>
                             </tr>
@@ -170,6 +172,11 @@
     function fnRegRepairPage(url) {
         window.parent.fnClickMenu(url);
     }
+
+    function fnGoDetail(repairIdx) {
+        window.parent.fnClickMenu('/repair/' + repairIdx);
+    }
+
 
 </script>
 </body>

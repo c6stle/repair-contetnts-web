@@ -30,9 +30,19 @@ public class MenuService {
         /* //조회권한 미적용 쿼리
         return menuRepository.findByParentIsNull(Sort.by(Sort.Direction.ASC, "menuOrder")).stream()
                 .map(MenuDto::new).collect(Collectors.toList());*/
+        return menuRepository.findByVisibleAndViewAuthority(authorityCdList).stream()
+                .map(MenuDto::new).collect(Collectors.toList());
+    }
+
+    //메뉴목록 가져오기
+    public List<MenuDto> getMenuMngList(Collection<String> authorityCdList) {
+        /* //조회권한 미적용 쿼리
+        return menuRepository.findByParentIsNull(Sort.by(Sort.Direction.ASC, "menuOrder")).stream()
+                .map(MenuDto::new).collect(Collectors.toList());*/
         return menuRepository.findByViewAuthority(authorityCdList).stream()
                 .map(MenuDto::new).collect(Collectors.toList());
     }
+
 
     public MenuDto getMenuInfo(Long menuIdx) {
         return menuRepository.findById(menuIdx).map(menu ->
@@ -41,6 +51,7 @@ public class MenuService {
                         .menuOrder(menu.getMenuOrder())
                         .menuNm(menu.getMenuNm())
                         .menuLink(menu.getMenuLink())
+                        .visibleLinkYn(menu.getVisibleLinkYn())
                         .viewAuthority(menu.getViewAuthority())
                         .saveAuthority(menu.getSaveAuthority())
                         .parentMenuIdx(menu.getParent() == null ? null : menu.getParent().getMenuIdx())

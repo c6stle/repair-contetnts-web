@@ -39,7 +39,7 @@ public class MenuController {
         //비동기 호출 아니므로 MessageException 사용불가
         try {
             MemberDetails principal = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            model.addAttribute("menus", menuService.getSideMenuList(principal.getAuthoritiesStrArr()));
+            model.addAttribute("menus", menuService.getMenuMngList(principal.getAuthoritiesStrArr()));
             model.addAttribute("authorities", authorityService.getAuthorities());
         } catch (Exception e) {
             log.error("", e);

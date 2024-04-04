@@ -21,6 +21,10 @@ public class MenuDto {
     @NotEmpty
     private String menuNm;
     private String menuLink;
+
+    @NotEmpty
+    private String visibleLinkYn;
+
     @NotEmpty
     private String viewAuthority;
     @NotEmpty
@@ -47,6 +51,7 @@ public class MenuDto {
         this.menuOrder = menu.getMenuOrder();
         this.menuNm = menu.getMenuNm();
         this.menuLink = menu.getMenuLink();
+        this.visibleLinkYn = menu.getVisibleLinkYn();
         this.viewAuthority = menu.getViewAuthority();
         this.saveAuthority = menu.getSaveAuthority();
         this.parentMenuIdx = menu.getParent() == null ? null : menu.getParent().getMenuIdx();

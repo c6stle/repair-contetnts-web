@@ -25,11 +25,11 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        MemberDetails loginAdmin = (MemberDetails) authentication.getPrincipal();
-        log.info("login member userId : {}", loginAdmin.getUsername());
-        log.info("login member userNm : {}", loginAdmin.getUserNm());
+        MemberDetails loginMember = (MemberDetails) authentication.getPrincipal();
+        log.info("login member userId : {}", loginMember.getUsername());
+        log.info("login member userNm : {}", loginMember.getUserNm());
         log.info("login member authority : {}", authentication.getAuthorities());
-        session.setAttribute(SessionConstants.LOGIN_ADMIN, loginAdmin.getUserNm());
+        session.setAttribute(SessionConstants.LOGIN_ADMIN, loginMember.getUserNm());
 
         //MenuAuthority 객체에 메뉴 url 과 권한 세팅
         MenuAuthorityDto.menuAuthorities = service.getMenuList();

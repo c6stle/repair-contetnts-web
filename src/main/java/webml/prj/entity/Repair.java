@@ -40,5 +40,13 @@ public class Repair extends Base {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiveDt;
 
-    private String delYn;
+    public void update(Partner partner, LocalDate receiveDt, String productVal, String specificVal, String repairContents, Long price, Store store) {
+        this.partner = partner;
+        this.receiveDt = receiveDt;
+        this.productVal = productVal;
+        this.specificVal = specificVal;
+        this.repairContents = repairContents;
+        this.price = price;
+        this.store = store;
+    }
 }

@@ -50,7 +50,7 @@
     <script th:src="@{/assets/js/main.js}"></script>
 
     <script type="text/javascript">
-        $(document).ajaxSend(function(event, req) {
+        $(document).ajaxSend(function(event, req, res) {
             try {
                 req.setRequestHeader("nowURL", window.location.pathname);
             } catch (e) {

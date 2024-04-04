@@ -100,6 +100,16 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">매뉴보이기 <i class="bi-eye-fill" id="visibleLinkYnIcon"></i></label>
+                            <div class="col-sm-8" style="align-content: center;">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="visibleLinkYn" value="Y" checked>
+                                    <label class="form-check-label" for="visibleLinkYn">비활성 시 좌측 메뉴에 보이지 않습니다.</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="viewAuthority" class="col-sm-4 col-form-label">조회권한</label>
                             <div class="col-sm-8">
                                 <select class="form-select" aria-label="Default select example" id="viewAuthority" name="viewAuthority">
@@ -146,6 +156,16 @@
                 fnSetMenuOrder(this);
             }
         });
+
+        $('#visibleLinkYn').on('change', function() {
+            if ($(this).val() === 'Y') {
+                $('#visibleLinkYnIcon').removeClass().addClass('bi-eye-slash-fill');
+                $('#visibleLinkYn').val('N');
+            } else {
+                $('#visibleLinkYnIcon').removeClass().addClass('bi-eye-fill');
+                $('#visibleLinkYn').val('Y');
+            }
+        });
     });
 
     function fnSetMenuOrder(obj) {
@@ -171,12 +191,22 @@
                 $('#bfParentMenuIdx').val(rtn.menuInfo.parentMenuIdx);
                 $('#menuNm').val(rtn.menuInfo.menuNm);
                 $('#menuLink').val(rtn.menuInfo.menuLink);
+
                 if (rtn.menuInfo.parentMenuIdx === null) {
                     $('#parentMenuIdx').attr("disabled", true).val('').prop("selected", true);
                 } else {
                     $('#parentMenuIdx').attr("disabled", false).val(rtn.menuInfo.parentMenuIdx).prop("selected", true);
                 }
+
                 $('#menuOrder').val(rtn.menuInfo.menuOrder);
+
+                if (rtn.menuInfo.visibleLinkYn === 'N') {
+                    $('#visibleLinkYnIcon').removeClass().addClass('bi-eye-slash-fill');
+                    $('#visibleLinkYn').val('N').prop("checked", false);
+                } else {
+                    $('#visibleLinkYnIcon').removeClass().addClass('bi-eye-fill');
+                    $('#visibleLinkYn').val('Y').prop("checked", true);
+                }
                 $('#viewAuthority').val(rtn.menuInfo.viewAuthority).prop("selected", true);
                 $('#saveAuthority').val(rtn.menuInfo.saveAuthority).prop("selected", true);
                 $('#regDt').val(rtn.menuInfo.regDt);
@@ -219,6 +249,7 @@
                     menuLink: $('#menuLink').val(),
                     parentMenuIdx: $('#parentMenuIdx').val(),
                     parentMenuChgYn: parentMenuChgYn,
+                    visibleLinkYn: $('#visibleLinkYn').val(),
                     viewAuthority: $('#viewAuthority').val(),
                     saveAuthority: $('#saveAuthority').val()
                 }),
@@ -250,7 +281,7 @@
                     alert(rtn.message);
                     location.href = '/menu'
                 }
-            })
+            });
         }
     }
 

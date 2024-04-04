@@ -19,6 +19,9 @@ public class Menu extends Base {
     private int menuOrder;
     private String menuNm;
     private String menuLink;
+
+    private String visibleLinkYn;
+
     private String viewAuthority;
     private String saveAuthority;
 

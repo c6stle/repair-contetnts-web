@@ -30,7 +30,8 @@ public class AuthorityCheckFilter {
             log.info("AuthorityCheckFilter.check nowUrl : {}", nowUrl);
             MemberDetails loginAdmin = (MemberDetails) authentication.getPrincipal();
             for (MenuDto menuDto: MenuAuthorityDto.menuAuthorities) {
-                if (menuDto.getMenuLink() != null && menuDto.getMenuLink().equals(nowUrl)) {
+                //TODO : nowUrl.contains(menuDto.getMenuLink()) 임시조치, 이전 URL 에서 헤더에 담아 이동하는 방식으로 변경필요
+                if (menuDto.getMenuLink() != null && nowUrl.contains(menuDto.getMenuLink())) {
                     log.info("AuthorityCheckFilter.check loginAdmin.getAuthoritiesStrArr() : {}", loginAdmin.getAuthoritiesStrArr());
                     log.info("AuthorityCheckFilter.check menuDTO.getSaveAuthority() : {}", menuDto.getSaveAuthority());
                     if (loginAdmin.getAuthoritiesStrArr().contains(menuDto.getSaveAuthority())) {
