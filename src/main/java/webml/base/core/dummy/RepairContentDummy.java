@@ -1,9 +1,11 @@
 package webml.base.core.dummy;
 
 import lombok.RequiredArgsConstructor;
+import webml.prj.entity.Manager;
 import webml.prj.entity.Partner;
 import webml.prj.entity.Repair;
 import webml.prj.entity.Store;
+import webml.prj.repository.ManagerRepository;
 import webml.prj.repository.PartnerRepository;
 import webml.prj.repository.RepairRepository;
 import webml.prj.repository.StoreRepository;
@@ -21,6 +23,8 @@ public class RepairContentDummy {
 
     private final RepairRepository repairRepository;
 
+    private final ManagerRepository managerRepository;
+
     //@PostConstruct
     public void repairContent() throws NoSuchAlgorithmException {
 
@@ -28,8 +32,14 @@ public class RepairContentDummy {
                 .partnerIdx(1L)
                 .partnerNm("다미아니")
                 .build();
-
         partnerRepository.save(partner);
+
+        Manager manager = Manager.builder()
+                .managerIdx(1L)
+                .managerMail("abc@abc.com")
+                .partner(partner)
+                .build();
+        managerRepository.save(manager);
 
         Store store = Store.builder()
                 .storeIdx(1L)

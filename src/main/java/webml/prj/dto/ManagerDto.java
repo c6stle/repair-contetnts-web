@@ -11,7 +11,7 @@ public class ManagerDto {
 
     private Long managerIdx;
 
-    private String mangerMail;
+    private String managerMail;
 
     private Long partnerIdx;
 
@@ -19,7 +19,7 @@ public class ManagerDto {
 
     public ManagerDto(Manager manager) {
         this.managerIdx = manager.getManagerIdx();
-        this.mangerMail = manager.getMangerMail();
+        this.managerMail = manager.getManagerMail();
         this.partnerIdx = manager.getPartner().getPartnerIdx();
         this.partnerNm = manager.getPartner().getPartnerNm();
     }

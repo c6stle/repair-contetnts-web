@@ -32,6 +32,10 @@ public class MemberDto {
         this.memberIdx = memberIdx;
     }
 
+    public void setLastLoginDt(LocalDateTime lastLoginDt) {
+        this.lastLoginDt = lastLoginDt;
+    }
+
     public MemberDto(Member member) {
         this.memberIdx = member.getMemberIdx();
         this.userId = member.getUserId();

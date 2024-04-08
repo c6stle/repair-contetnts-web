@@ -33,17 +33,19 @@ public class Menu extends Base {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Menu> childMenu;
 
-    public void update(int menuOrder, String menuNm, String menuLink, String viewAuthority, String saveAuthority, Menu parent) {
+    public void update(int menuOrder, String menuNm, String menuLink, String visibleLinkYn, String viewAuthority, String saveAuthority, Menu parent) {
         this.menuOrder = menuOrder;
         this.menuNm = menuNm;
         this.menuLink = menuLink;
+        this.visibleLinkYn = visibleLinkYn;
         this.viewAuthority = viewAuthority;
         this.saveAuthority = saveAuthority;
         this.parent = parent;
     }
-    public void update(String menuNm, String menuLink, String viewAuthority, String saveAuthority) {
+    public void update(String menuNm, String menuLink, String visibleLinkYn, String viewAuthority, String saveAuthority) {
         this.menuNm = menuNm;
         this.menuLink = menuLink;
+        this.visibleLinkYn = visibleLinkYn;
         this.viewAuthority = viewAuthority;
         this.saveAuthority = saveAuthority;
     }

@@ -28,9 +28,9 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
                 .selectFrom(menu)
                 .leftJoin(menu.childMenu, menuChild).fetchJoin()
                 .where(menu.parent.isNull(),
-                        menu.viewAuthority.in(authorityCdList),
                         menu.visibleLinkYn.eq("Y"),
-                        menuChild.viewAuthority.in(authorityCdList).or(menuChild.isNull()))
+                        menu.viewAuthority.in(authorityCdList),
+                        menuChild.viewAuthority.in(authorityCdList).or(menuChild.isNull())) //자식메뉴가 없는것도 출력해야함
                 .orderBy(menu.menuOrder.asc())
                 .fetch();
     }

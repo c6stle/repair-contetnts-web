@@ -104,7 +104,7 @@ public class RepairController {
         Map<String, Object> rtnMap = new HashMap<>();
         try {
             repairService.deleteRepair(repairIdx);
-            rtnMap.put("message", "저장되었습니다.");
+            rtnMap.put("message", "삭제되었습니다.");
         } catch (Exception e) {
             log.error("", e);
             throw new MessageException(e.getMessage());

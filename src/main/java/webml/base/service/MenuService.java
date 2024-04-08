@@ -76,6 +76,7 @@ public class MenuService {
                 .menuNm(menuDto.getMenuNm())
                 .menuLink(menuDto.getMenuLink())
                 .menuOrder(count + 1)
+                .visibleLinkYn(menuDto.getVisibleLinkYn())
                 .viewAuthority(menuDto.getViewAuthority())
                 .saveAuthority(menuDto.getSaveAuthority())
                 .parent(parent)
@@ -106,6 +107,7 @@ public class MenuService {
                 menu.update(count + 1,
                         menuDto.getMenuNm(),
                         menuDto.getMenuLink(),
+                        menuDto.getVisibleLinkYn(),
                         menuDto.getViewAuthority(),
                         menuDto.getSaveAuthority(),
                         parent);
@@ -119,6 +121,7 @@ public class MenuService {
             } else {
                 menu.update(menuDto.getMenuNm(),
                         menuDto.getMenuLink(),
+                        menuDto.getVisibleLinkYn(),
                         menuDto.getViewAuthority(),
                         menuDto.getSaveAuthority());
             }

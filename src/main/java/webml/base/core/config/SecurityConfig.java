@@ -62,7 +62,8 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .successHandler(new LoginSuccessHandler(menuService))
-                        .failureHandler(new LoginFailureHandler()))
+                        .failureHandler(new LoginFailureHandler())
+                )
 
                 .sessionManagement(s -> s
                         .maximumSessions(1)

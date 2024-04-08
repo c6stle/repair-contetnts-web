@@ -20,6 +20,16 @@ public class Partner extends Base {
 
     private String partnerNm;
 
+    private String delYn;
+
     @OneToMany(mappedBy = "partner")
     private List<Manager> managers;
+
+    public void update(String partnerNm) {
+        this.partnerNm = partnerNm;
+    }
+
+    public void delete(String delYn) {
+        this.delYn = delYn;
+    }
 }

@@ -36,7 +36,7 @@
             </nav>
         </div>
         <div style="text-align: right;">
-            <button type="button" class="btn btn-outline-primary" onclick="fnRegRepairPage('/main');">신규등록</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnRegRepair('/main');">신규등록</button>
             <button type="button" class="btn btn-outline-primary" onclick="fnUpdateMenuAuthority();">EXCEL</button>
         </div>
     </div><!-- End Page Title -->
@@ -169,7 +169,7 @@
         $('#searchForm').submit();
     }
 
-    function fnRegRepairPage(url) {
+    function fnRegRepair(url) {
         window.parent.fnClickMenu(url);
     }
 

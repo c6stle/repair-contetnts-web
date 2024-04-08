@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragment/head_inc :: head_inc}"/>
+    <title>메뉴관리</title>
+</head>
+<body>
+<main id="main" class="main">
+    <div class="pagetitle" style="display:flex;justify-content: space-between">
+        <div>
+            <h1>거래처</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item">거래처</li>
+                    <li class="breadcrumb-item">수정/삭제</li>
+                </ol>
+            </nav>
+        </div>
+        <div style="text-align: right;">
+            <button type="button" class="btn btn-outline-primary" onclick="fnGoPartnerList();">목록</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnUpdatePartner();">저장</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="fnDeletePartner();">삭제</button>
+        </div>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">거래처상세</h5>
+                        <input type="hidden" id="partnerIdx" name="partnerIdx" th:value="${partner.partnerIdx}">
+                        <div class="row mb-3">
+                            <label style="text-align: right;" for="partnerNm" class="col-sm-2 col-form-label">거래처명</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="partnerNm" name="partnerNm" th:value="${partner.partnerNm}">
+                            </div>
+                        </div>
+
+                        <div id="managerDiv">
+                            <div th:if="${#lists.size(partner.managers) > 0}" class="row mb-3"
+                                 th:each="manager, stat : ${partner.managers}" th:id="'managerDiv_' + ${manager.managerIdx}">
+                                <label style="text-align: right;" class="col-sm-2 col-form-label" th:text="${stat.index eq 0 ? '담당자' : ''}"></label>
+                                <div class="col-sm-7">
+                                    <input type="hidden" name="managerIdx"
+                                           th:id="'managerIdx_' + ${manager.managerIdx}" th:value="${manager.managerIdx}">
+                                    <input type="text" class="col-sm-8 form-control" name="managerMail"
+                                           th:id="'managerMail_' + ${manager.managerIdx}" th:value="${manager.managerMail}">
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-outline-primary" onclick="fnAddManager();">추가</button>
+                                    <button type="button" class="btn btn-outline-secondary" th:onclick="|fnDelManager(this, '@{${manager.managerIdx}}')|">삭제</button>
+                                </div>
+                            </div>
+                            <div th:unless="${#lists.size(partner.managers) > 0}" class="row mb-3">
+                                <label style="text-align: right;" class="col-sm-2 col-form-label">담당자</label>
+                                <div class="col-sm-7">
+                                    <input type="hidden" name="newManagerIdx">
+                                    <input type="email" class="col-sm-8 form-control" name="newManagerMail">
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-outline-primary" onclick="fnAddManager();">추가</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label style="text-align: right;" for="lastLoginDt" class="col-sm-2 col-form-label">추가파일</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="lastLoginDt" name="lastLoginDt" placeholder="자동등록" disabled>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <label style="text-align: right;" for="regUserId" class="col-sm-2 col-form-label">등록자</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regUserId" name="regUserId" placeholder="자동등록" th:value="${partner.regUserId}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label style="text-align: right;" for="regDt" class="col-sm-2 col-form-label">등록일시</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDt" name="regDt" placeholder="자동등록"
+                                       th:value="${#temporals.format(partner.regDt, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+    });
+
+    function fnGoPartnerList() {
+        window.parent.fnClickMenu('/partner');
+    }
+
+    function fnUpdatePartner() {
+        if (confirm("저장하시겠습니까?")) {
+
+            let partnerIdx = $('#partnerIdx').val();
+
+            let arr = [];
+            $('input[name=managerMail]').each(function() {
+                arr.push({'managerIdx': $(this).parent().children('input[name=managerIdx]').val(), 'managerMail': $(this).val()});
+            });
+
+            $('input[name=newManagerMail]').each(function() {
+                arr.push({'managerMail': $(this).val()});
+            });
+
+            $.ajax({
+                url: "/partner/" + partnerIdx,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    partnerNm : $('#partnerNm').val(),
+                    managers : arr
+                }),
+                success: function (rtn) {
+                    alert(rtn.message);
+                    fnGoPartnerList();
+                }
+            });
+        }
+    }
+
+    function fnDeletePartner() {
+        if (confirm("삭제하시겠습니까?")) {
+            let partnerIdx = $('#partnerIdx').val();
+
+            $.ajax({
+                url: "/partner/" + partnerIdx,
+                method: 'PUT',
+                contentType: 'application/json',
+                success: function (rtn) {
+                    alert(rtn.message);
+                    fnGoPartnerList();
+                }
+            });
+        }
+    }
+
+    function fnAddManager() {
+        let managerDivHtml = "<div class='row mb-3' id='managerDiv_'><label class='col-sm-2 col-form-label'></label>";
+        managerDivHtml += "<div class='col-sm-7'><input type='hidden' name='newManagerIdx'>";
+        managerDivHtml += "<input type='email' class='col-sm-8 form-control' name='newManagerMail'>";
+        managerDivHtml += "</div><div class='col-sm-3'>";
+        managerDivHtml += "<button type='button' class='btn btn-outline-primary' onclick='fnAddManager();'>추가</button>";
+        managerDivHtml += "<button type='button' class='btn btn-outline-secondary' onclick='fnDelManager(this);'>삭제</button></div></div>";
+        $('#managerDiv').append(managerDivHtml);
+    }
+
+    function fnDelManager(obj, managerIdx) {
+        if (confirm("담당자를 삭제하시겠습니까?")) {
+            if (managerIdx !== null && managerIdx !== undefined) {
+                $.ajax({
+                    url: "/partner/" + managerIdx,
+                    method: 'DELETE',
+                    contentType: 'application/json',
+                    success: function (rtn) {
+                        alert(rtn.message);
+                    }
+                });
+            }
+            $(obj).parent().parent().remove();
+        }
+    }
+
+
+</script>
+
+</body>
+</html>
