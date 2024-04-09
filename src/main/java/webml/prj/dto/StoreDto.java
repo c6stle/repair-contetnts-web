@@ -1,5 +1,6 @@
 package webml.prj.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import webml.prj.entity.Store;
 
@@ -10,6 +11,7 @@ import webml.prj.entity.Store;
 public class StoreDto {
     private Long storeIdx;
 
+    @NotEmpty
     private String storeNm;
 
     private String storeAddress;

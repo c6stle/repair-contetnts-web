@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webml.prj.dto.StoreDto;
+import webml.prj.entity.Store;
 import webml.prj.repository.StoreRepository;
 
 import java.util.List;
@@ -20,5 +21,14 @@ public class StoreService {
 
     public List<StoreDto> getStoreList() {
         return storeRepository.findAll().stream().map(StoreDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void save(StoreDto storeDto) {
+        Store store = Store.builder()
+                .storeNm(storeDto.getStoreNm())
+                .storeAddress(storeDto.getStoreAddress())
+                .build();
+        storeRepository.save(store);
     }
 }

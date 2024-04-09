@@ -170,10 +170,12 @@
                     contentType: 'application/json',
                     success: function (rtn) {
                         alert(rtn.message);
+                        $(obj).parent().parent().remove();
                     }
                 });
+            } else {
+                $(obj).parent().parent().remove();
             }
-            $(obj).parent().parent().remove();
         }
     }
 
