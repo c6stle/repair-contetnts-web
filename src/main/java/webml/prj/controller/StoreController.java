@@ -38,8 +38,20 @@ public class StoreController {
                 FieldError error = bindingResult.getFieldErrors().get(0);
                 throw new MessageException(error.getDefaultMessage());
             }
-            storeService.save(storeDto);
+            rtnMap.put("store", storeService.save(storeDto));
             rtnMap.put("message", "저장되었습니다.");
+        } catch (Exception e) {
+            throw new MessageException(e.getMessage());
+        }
+        return rtnMap;
+    }
+
+    @DeleteMapping("/{storeIdx}")
+    public Map<String, Object> delStore(@PathVariable Long storeIdx) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            storeService.deleteStore(storeIdx);
+            rtnMap.put("message", "삭제되었습니다.");
         } catch (Exception e) {
             throw new MessageException(e.getMessage());
         }

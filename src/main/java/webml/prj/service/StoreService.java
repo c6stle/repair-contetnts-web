@@ -24,11 +24,21 @@ public class StoreService {
     }
 
     @Transactional
-    public void save(StoreDto storeDto) {
+    public StoreDto save(StoreDto storeDto) {
         Store store = Store.builder()
                 .storeNm(storeDto.getStoreNm())
                 .storeAddress(storeDto.getStoreAddress())
                 .build();
         storeRepository.save(store);
+        return StoreDto.builder()
+                .storeIdx(store.getStoreIdx())
+                .storeNm(store.getStoreNm())
+                .storeAddress(store.getStoreAddress())
+                .build();
+    }
+
+    @Transactional
+    public void deleteStore(Long storeIdx) {
+        storeRepository.deleteById(storeIdx);
     }
 }

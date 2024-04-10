@@ -37,7 +37,7 @@
         </div>
         <div style="text-align: right;">
             <button type="button" class="btn btn-outline-primary" onclick="fnRegRepair('/main');">신규등록</button>
-            <button type="button" class="btn btn-outline-primary" onclick="fnUpdateMenuAuthority();">EXCEL</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnDownloadExcel();">EXCEL</button>
         </div>
     </div><!-- End Page Title -->
 
@@ -175,6 +175,10 @@
 
     function fnGoDetail(repairIdx) {
         window.parent.fnClickMenu('/repair/' + repairIdx);
+    }
+
+    function fnDownloadExcel() {
+
     }
 
 

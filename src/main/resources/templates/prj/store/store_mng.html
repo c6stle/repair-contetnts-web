@@ -3,6 +3,12 @@
 <head>
     <th:block th:replace="~{fragment/head_inc :: head_inc}"/>
     <title>메뉴관리</title>
+    <style>
+        .store-contents {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <main id="main" class="main">
@@ -17,7 +23,9 @@
             </nav>
         </div>
         <div style="text-align: right;">
-            <button type="button" class="btn btn-outline-primary" onclick="fnRegStore();">추가</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnNewStore();">신규</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnRegStore();">저장</button>
+            <button type="button" class="btn btn-outline-primary" onclick="fnDelStore();">삭제</button>
         </div>
     </div><!-- End Page Title -->
 
@@ -25,11 +33,15 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="card">
-                    <div class="card-body" id="store_card">
+                    <div class="card-body">
                         <h5 class="card-title">거래매장관리</h5>
-                        <span th:each="store : ${stores}" class="badge random-color" th:text="${store.storeNm}">
-                            <input type="hidden" name="storeIdx" th:value="${store.storeIdx}"/>
-                        </span>
+                        <div style="display: inline-flex; flex-wrap:wrap;" id="store_div">
+                            <div th:each="store : ${stores}" class="store-contents" onclick="fnStoreDetail(this);">
+                                <span class="badge" th:text="${store.storeNm}"></span>
+                                <input type="hidden" name="storeIdx" th:value="${store.storeIdx}"/>
+                                <input type="hidden" name="storeAddress" th:value="${store.storeAddress}"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,7 +49,7 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">매장등록</h5>
+                        <h5 class="card-title">매장상세</h5>
                         <input type="hidden" id="storeIdx" name="storeIdx">
                         <div class="row mb-3">
                             <label for="storeNm" class="col-sm-4 col-form-label">매장명</label>
@@ -63,7 +75,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-        $('.random-color').each(function(i) {
+        $('.badge').each(function(i) {
             let f_color = "#" + (parseInt(Math.random() * 0xffffff)).toString(16);
             $(this).css("color", f_color).css("border", "1px solid " + f_color);
         });
@@ -71,20 +83,27 @@
 
     function fnRegStore() {
         if (confirm("저장하시겠습니까?")) {
+
+            let storeNm = $('#storeNm').val();
+            let storeAddress = $('#storeAddress').val();
+
             $.ajax({
                 url: "/store",
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    storeNm : $('#storeNm').val(),
-                    storeAddress: $('#storeAddress').val()
+                    storeNm : storeNm,
+                    storeAddress: storeAddress
                 }),
                 success: function (rtn) {
                     alert(rtn.message);
                     let f_color = "#" + (parseInt(Math.random() * 0xffffff)).toString(16);
-                    let spanHtml = '<span class="badge random-color" style="border:1px solid' + f_color + '">' + $('#storeNm').val();
-                    spanHtml += '<input type="hidden" name="storeAddress" value="' + $('#storeAddress').val() + '"/></span>';
-                    $('#store_card').append(spanHtml);
+                    let spanHtml = "<div class='store-contents' onclick='fnStoreDetail(this);'>"
+                    spanHtml += "<span class='badge' style='color:" + f_color + "; border:1px solid " + f_color + "'>" + rtn.store.storeNm + "</span>";
+                    spanHtml += '<input type="hidden" name="storeIdx" value="' + rtn.store.storeIdx + '"/>'
+                    spanHtml += '<input type="hidden" name="storeAddress" value="' + rtn.store.storeAddress + '"/>'
+                    spanHtml += '</div>';
+                    $('#store_div').append(spanHtml);
 
                     $('#storeNm').val('');
                     $('#storeAddress').val('');
@@ -92,6 +111,44 @@
             });
         }
     }
+
+    function fnStoreDetail(obj) {
+        let storeNm = $(obj).children('span').text();
+        let storeIdx = $(obj).children('input[name=storeIdx]').val();
+        let storeAddress = $(obj).children('input[name=storeAddress]').val();
+        $('#storeIdx').val(storeIdx);
+        $('#storeNm').val(storeNm);
+        $('#storeAddress').val(storeAddress);
+    }
+
+    function fnNewStore() {
+        $('#storeIdx').val('');
+        $('#storeNm').val('');
+        $('#storeAddress').val('');
+    }
+
+    function fnDelStore() {
+        const storeIdx = $('#storeIdx').val()
+        if (storeIdx === null || storeIdx === '') {
+            alert('선택된 매장이 없습니다.');
+            return;
+        }
+
+        if (confirm("삭제하시겠습니까?")) {
+            $.ajax({
+                url: "/store" + storeIdx,
+                method: 'DELETE',
+                contentType: 'application/json',
+                success: function (rtn) {
+                    alert(rtn.message);
+                    $('#storeIdx').val('');
+                    $('#storeNm').val('');
+                    $('#storeAddress').val('');
+                }
+            });
+        }
+    }
+
 
 </script>
 
