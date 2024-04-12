@@ -178,7 +178,17 @@
     }
 
     function fnDownloadExcel() {
+        $.ajax({
+            url: '/repair/excel',
+            method: 'POST',
+            contentType: 'application/json',
 
+            data: JSON.stringify({
+                beginDt: $('#beginDt').val(),
+                endDt: $('#endDt').val(),
+                partnerIdx: $('#partnerIdx').val(),
+            })
+        });
     }
 
 

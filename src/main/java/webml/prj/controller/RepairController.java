@@ -3,6 +3,7 @@ package webml.prj.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import webml.prj.service.RepairService;
 import webml.prj.service.StoreService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -100,7 +102,7 @@ public class RepairController {
 
     @ResponseBody
     @DeleteMapping("/{repairIdx}")
-    public Map<String, Object> updateRepair(@PathVariable Long repairIdx) {
+    public Map<String, Object> deleteRepair(@PathVariable Long repairIdx) {
         Map<String, Object> rtnMap = new HashMap<>();
         try {
             repairService.deleteRepair(repairIdx);
@@ -110,6 +112,17 @@ public class RepairController {
             throw new MessageException(e.getMessage());
         }
         return rtnMap;
+    }
+
+    @ResponseBody
+    @PostMapping("/excel")
+    public Workbook downloadRepairs(RepairSearchDto searchDto) {
+        Workbook workbook = null;
+
+        List<RepairDto> repairList = repairService.downloadRepairList(searchDto);
+
+
+        return workbook;
     }
 
 }

@@ -47,6 +47,18 @@ public class RepairRepositoryImpl implements RepairRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public List<Repair> searchDownloadExcel(RepairSearchDto searchDto) {
+        return jpaQueryFactory
+                .selectFrom(QRepair.repair)
+                .leftJoin(QRepair.repair.partner, QPartner.partner).fetchJoin()
+                .leftJoin(QRepair.repair.store, QStore.store).fetchJoin()
+                .where(partnerEq(searchDto.getPartnerIdx()),
+                        receiveDtBetween(searchDto.getBeginDt(), searchDto.getEndDt()))
+                .orderBy(QRepair.repair.store.storeNm.asc(), QRepair.repair.receiveDt.asc())
+                .fetch();
+    }
+
     private Predicate receiveDtBetween(String beginDt, String endDt) {
         if ((beginDt == null || endDt == null) || ("".equals(beginDt) || "".equals(endDt))) {
             return null;

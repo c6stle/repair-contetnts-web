@@ -12,4 +12,5 @@ public interface RepairRepositoryCustom {
 
     List<Repair> searchCond(PagingInfo pagingInfo, RepairSearchDto searchDto);
 
+    List<Repair> searchDownloadExcel(RepairSearchDto searchDto);
 }

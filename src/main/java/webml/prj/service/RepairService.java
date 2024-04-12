@@ -73,4 +73,8 @@ public class RepairService {
     public void deleteRepair(Long repairIdx) {
         repairRepository.deleteById(repairIdx);
     }
+
+    public List<RepairDto> downloadRepairList(RepairSearchDto searchDto) {
+        return repairRepository.searchDownloadExcel(searchDto).stream().map(RepairDto::new).collect(Collectors.toList());
+    }
 }
