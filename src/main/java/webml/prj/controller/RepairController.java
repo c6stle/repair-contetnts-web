@@ -23,7 +23,6 @@ import webml.prj.service.RepairService;
 import webml.prj.service.StoreService;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -125,10 +124,10 @@ public class RepairController {
 
     @ResponseBody
     @PostMapping("/excel")
-    public ResponseEntity<byte[]> downloadRepairs(@ModelAttribute(name = "searchForm") RepairSearchDto searchDto) throws IOException {
+    public ResponseEntity<byte[]> downloadRepairs(@RequestBody RepairSearchDto searchDto) {
         Workbook workbook = null;
 
-        try {
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 
             List<CustomMap> repairList = repairService.downloadRepairList(searchDto);
             workbook = new WorkbookUtil()
@@ -136,7 +135,6 @@ public class RepairController {
                     .setColNmList("receiveDt", "productVal", "specificVal", "repairContents", "price", "storeNm")
                     .setBody(repairList).getWorkbook();
 
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
             workbook.write(os);
 
             return ResponseEntity.ok()

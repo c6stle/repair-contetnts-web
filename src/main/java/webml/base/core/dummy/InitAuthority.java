@@ -47,7 +47,7 @@ public class InitAuthority {
 
         Menu authority = Menu.builder().menuNm("권한관리")
                 .menuOrder(2)
-                //.menuLink("/authority/member")
+                .menuLink("/authority/member")
                 .viewAuthority(일반관리자.getAuthorityCd())
                 .saveAuthority(시스템관리자.getAuthorityCd())
                 .visibleLinkYn("Y")
@@ -74,6 +74,7 @@ public class InitAuthority {
                 .build();
         menuRepository.save(authorityMenu);
 
+        //초기 시스템관리자
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Member admin = Member.builder().userId("admin")
                 .userNm("최고관리자")
