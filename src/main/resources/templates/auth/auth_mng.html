@@ -40,7 +40,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="member, stat : ${members}" th:onclick="|fnClickAdminDetail('@{${member.memberIdx}}')|">
+                                <tr th:each="member, stat : ${members}" th:onclick="|fnClickAdminDetail('@{${member.memberIdx}}')|" style="cursor: pointer;">
                                     <td style="text-align:center;" th:text="${stat.count}">-</td>
                                     <td style="text-align:center;" th:text="${member.userId}">-</td>
                                     <td style="text-align:center;" th:text="${member.userNm}">-</td>

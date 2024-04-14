@@ -83,7 +83,7 @@
                     <div class="card-body">
                         <p><code th:text="${pagingInfo.totalCnt}">0</code> 건</p>
                         <!-- Bordered Table -->
-                        <table class="table table-bordered" id="repairTable">
+                        <table class="table table-hover" id="repairTable">
                             <colgroup>
                                 <col style="width:10%;" />
                                 <col style="width:15%;" />
@@ -108,14 +108,13 @@
                             <tr th:if="${repairList.size eq 0}">
                                 <td colspan="6">조회된 데이터가 없습니다.</td>
                             </tr>
-                            <tr th:unless="${repairList.size eq 0}" th:each="repair, stat : ${repairList}">
+                            <tr th:unless="${repairList.size eq 0}" th:each="repair, stat : ${repairList}"
+                                th:onclick="|fnGoDetail('@{${repair.repairIdx}}')|" style="cursor: pointer;">
                                 <td th:text="${repair.partnerNm}">-</td>
                                 <td th:text="${#temporals.format(repair.receiveDt, 'yyyy-MM-dd')}">-</td>
                                 <td th:text="${repair.productVal}">-</td>
                                 <td th:text="${repair.specificVal}">-</td>
-                                <td>
-                                    <a href="#" class="text-primary fw-bold" th:text="${repair.repairContents}" th:onclick="|fnGoDetail('@{${repair.repairIdx}}')|">-</a>
-                                </td>
+                                <td th:text="${repair.repairContents}">-</td>
                                 <td th:text="${#numbers.formatInteger(repair.price, 3, 'COMMA')}">-</td>
                                 <td th:text="${repair.storeNm}">-</td>
                             </tr>
@@ -177,10 +176,6 @@
         window.parent.fnClickMenu('/repair/' + repairIdx);
     }
 
-    // function fnDownloadExcel() {
-    //     $('#searchForm').attr('method', 'POST').attr('action', '/repair/excel').submit();
-    // }
-
     function fnDownloadExcel() {
         $.ajax({
             url: '/repair/excel',
@@ -200,7 +195,6 @@
                 link.href = window.URL.createObjectURL(blob);
                 link.download = "진&솔 수리내역.xlsx";
                 link.click();
-                alert('엑셀 다운로드에 성공했습니다');
             }
         });
     }
