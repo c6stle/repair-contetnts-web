@@ -2,6 +2,7 @@ package webml.base.util;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -19,8 +20,11 @@ public class WorkbookUtil {
     public Font bodyFont;
     public CellStyle headStyle;
     public CellStyle bodyStyle;
+
     public List<String> headList;
     public List<String> colNmList;
+
+    public int nowRowNum = 0;
 
     public WorkbookUtil() {
         this.workbook = new XSSFWorkbook();
@@ -45,7 +49,7 @@ public class WorkbookUtil {
 
     public WorkbookUtil setHead(String... headNm) {
         this.headList = Arrays.asList(headNm);
-        XSSFRow row = this.sheet.createRow(0);//head row
+        XSSFRow row = this.sheet.createRow(this.nowRowNum);//head row
         for (int i = 0; i < this.headList.size(); i++) {
             XSSFCell cell = row.createCell(i);
             cell.setCellStyle(this.headStyle);
@@ -55,6 +59,7 @@ public class WorkbookUtil {
                 cell.setCellValue("");
             }
         }
+        this.nowRowNum++;
         return this;
     }
 
@@ -63,11 +68,25 @@ public class WorkbookUtil {
         return this;
     }
 
-    public WorkbookUtil setBody(List<?> list) {
-        //for ()
-
+    public WorkbookUtil setBody(List<CustomMap> list) {
+        for (CustomMap map : list) {
+            XSSFRow row = this.sheet.createRow(this.nowRowNum);
+            for (int j = 0; j < this.colNmList.size(); j++) {
+                String key = this.colNmList.get(j);
+                XSSFCell cell = row.createCell(j);
+                cell.setCellStyle(this.bodyStyle);
+                if (map.get(key) == null) {
+                    cell.setCellValue("");
+                } else {
+                    cell.setCellValue(map.getStr(key));
+                }
+            }
+            this.nowRowNum++;
+        }
         return this;
     }
 
-
+    public Workbook getWorkbook() {
+        return this.workbook;
+    }
 }

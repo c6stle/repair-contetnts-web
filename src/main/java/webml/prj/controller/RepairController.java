@@ -4,19 +4,28 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import webml.base.core.exception.MessageException;
+import webml.base.util.CustomMap;
 import webml.base.util.PagingInfo;
+import webml.base.util.WorkbookUtil;
 import webml.prj.dto.RepairDto;
 import webml.prj.dto.RepairSearchDto;
 import webml.prj.service.PartnerService;
 import webml.prj.service.RepairService;
 import webml.prj.service.StoreService;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,13 +125,28 @@ public class RepairController {
 
     @ResponseBody
     @PostMapping("/excel")
-    public Workbook downloadRepairs(RepairSearchDto searchDto) {
+    public ResponseEntity<byte[]> downloadRepairs(@ModelAttribute(name = "searchForm") RepairSearchDto searchDto) throws IOException {
         Workbook workbook = null;
 
-        List<RepairDto> repairList = repairService.downloadRepairList(searchDto);
+        try {
 
+            List<CustomMap> repairList = repairService.downloadRepairList(searchDto);
+            workbook = new WorkbookUtil()
+                    .setHead("날짜", "제품번호", "고유번호", "수리내용", "가격", "매장")
+                    .setColNmList("receiveDt", "productVal", "specificVal", "repairContents", "price", "storeNm")
+                    .setBody(repairList).getWorkbook();
 
-        return workbook;
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            workbook.write(os);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s.xlsx", URLEncoder.encode("진&솔 수리내역", StandardCharsets.UTF_8)))
+                    .body(os.toByteArray());
+        } catch (Exception e) {
+            log.error("", e);
+            throw new MessageException(e.getMessage());
+        }
     }
 
 }

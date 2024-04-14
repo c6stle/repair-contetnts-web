@@ -177,6 +177,10 @@
         window.parent.fnClickMenu('/repair/' + repairIdx);
     }
 
+    // function fnDownloadExcel() {
+    //     $('#searchForm').attr('method', 'POST').attr('action', '/repair/excel').submit();
+    // }
+
     function fnDownloadExcel() {
         $.ajax({
             url: '/repair/excel',
@@ -187,10 +191,19 @@
                 beginDt: $('#beginDt').val(),
                 endDt: $('#endDt').val(),
                 partnerIdx: $('#partnerIdx').val(),
-            })
+            }),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(blob) {
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "진&솔 수리내역.xlsx";
+                link.click();
+                alert('엑셀 다운로드에 성공했습니다');
+            }
         });
     }
-
 
 </script>
 </body>

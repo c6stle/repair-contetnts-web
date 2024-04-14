@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webml.base.core.exception.MessageException;
+import webml.base.util.CustomMap;
 import webml.base.util.PagingInfo;
 import webml.prj.dto.RepairDto;
 import webml.prj.dto.RepairSearchDto;
@@ -74,7 +75,17 @@ public class RepairService {
         repairRepository.deleteById(repairIdx);
     }
 
-    public List<RepairDto> downloadRepairList(RepairSearchDto searchDto) {
-        return repairRepository.searchDownloadExcel(searchDto).stream().map(RepairDto::new).collect(Collectors.toList());
+    public List<CustomMap> downloadRepairList(RepairSearchDto searchDto) {
+        return repairRepository.searchDownloadExcel(searchDto).stream()
+                .map(repair -> {
+                    CustomMap tmpMap = new CustomMap();
+                    tmpMap.put("receiveDt", repair.getReceiveDt());
+                    tmpMap.put("productVal", repair.getProductVal());
+                    tmpMap.put("specificVal", repair.getSpecificVal());
+                    tmpMap.put("repairContents", repair.getRepairContents());
+                    tmpMap.put("price", repair.getPrice());
+                    tmpMap.put("storeNm", repair.getStore().getStoreNm());
+                    return tmpMap;
+                }).collect(Collectors.toList());
     }
 }
