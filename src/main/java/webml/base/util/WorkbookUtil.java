@@ -1,6 +1,7 @@
 package webml.base.util;
 
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -20,6 +21,8 @@ public class WorkbookUtil {
     public Font bodyFont;
     public CellStyle headStyle;
     public CellStyle bodyStyle;
+    public DataFormat numberFormat;
+    public CellStyle bodyPriceStyle;
 
     public List<String> headList;
     public List<String> colNmList;
@@ -45,6 +48,12 @@ public class WorkbookUtil {
         this.bodyStyle = this.workbook.createCellStyle();
         this.bodyStyle.setFont(this.bodyFont);
         this.bodyStyle.setAlignment(CellStyle.ALIGN_CENTER);
+
+        this.numberFormat = this.workbook.createDataFormat();
+        this.bodyPriceStyle = this.workbook.createCellStyle();
+        this.bodyPriceStyle.setDataFormat(this.numberFormat.getFormat("#,##0"));
+        this.bodyPriceStyle.setFont(this.bodyFont);
+        this.bodyPriceStyle.setAlignment(CellStyle.ALIGN_CENTER);
     }
 
     public WorkbookUtil setHead(String... headNm) {
@@ -74,7 +83,11 @@ public class WorkbookUtil {
             for (int j = 0; j < this.colNmList.size(); j++) {
                 String key = this.colNmList.get(j);
                 XSSFCell cell = row.createCell(j);
-                cell.setCellStyle(this.bodyStyle);
+                if (map.get(key) instanceof Long) {
+                    cell.setCellStyle(this.bodyPriceStyle);
+                } else {
+                    cell.setCellStyle(this.bodyStyle);
+                }
                 if (map.get(key) == null) {
                     cell.setCellValue("");
                 } else {

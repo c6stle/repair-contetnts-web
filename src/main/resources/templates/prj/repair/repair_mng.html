@@ -177,15 +177,19 @@
     }
 
     function fnDownloadExcel() {
+        let partnerIdx = $('#selectPartner').val();
+        if (partnerIdx === '' || partnerIdx === null) {
+            return;
+        }
+
         $.ajax({
             url: '/repair/excel',
             method: 'POST',
             contentType: 'application/json',
-
             data: JSON.stringify({
                 beginDt: $('#beginDt').val(),
                 endDt: $('#endDt').val(),
-                partnerIdx: $('#partnerIdx').val(),
+                partnerIdx: partnerIdx,
             }),
             xhrFields: {
                 responseType: 'blob'

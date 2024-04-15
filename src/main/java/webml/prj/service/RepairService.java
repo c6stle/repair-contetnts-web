@@ -9,6 +9,7 @@ import webml.base.util.CustomMap;
 import webml.base.util.PagingInfo;
 import webml.prj.dto.RepairDto;
 import webml.prj.dto.RepairSearchDto;
+import webml.prj.dto.StatisticsResponseDto;
 import webml.prj.entity.Partner;
 import webml.prj.entity.Repair;
 import webml.prj.entity.Store;
@@ -87,5 +88,10 @@ public class RepairService {
                     tmpMap.put("storeNm", repair.getStore().getStoreNm());
                     return tmpMap;
                 }).collect(Collectors.toList());
+    }
+
+
+    public List<StatisticsResponseDto> statistics() {
+        return repairRepository.statistics().stream().map(StatisticsResponseDto::new).collect(Collectors.toList());
     }
 }

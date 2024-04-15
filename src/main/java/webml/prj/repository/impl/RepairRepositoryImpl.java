@@ -1,5 +1,6 @@
 package webml.prj.repository.impl;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -21,6 +22,16 @@ public class RepairRepositoryImpl implements RepairRepositoryCustom {
 
     public RepairRepositoryImpl(EntityManager em) {
         this.jpaQueryFactory = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public List<Tuple> statistics() {
+        StringExpression format = Expressions.stringTemplate("FUNCTION('FORMATDATETIME', {0}, '%Y-%m')", QRepair.repair.receiveDt);
+        return jpaQueryFactory
+                .select(format.as("month"), QRepair.repair.count().as("count"), QRepair.repair.price.sum().as("sum"))
+                .from(QRepair.repair)
+                .groupBy(format)
+                .fetch();
     }
 
     @Override
