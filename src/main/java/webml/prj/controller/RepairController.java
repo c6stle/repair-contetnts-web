@@ -14,7 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import webml.base.core.exception.MessageException;
 import webml.base.util.CustomMap;
-import webml.base.util.PagingInfo;
+import webml.base.util.PagingUtil;
 import webml.base.util.WorkbookUtil;
 import webml.prj.dto.RepairDto;
 import webml.prj.dto.RepairSearchDto;
@@ -48,11 +48,11 @@ public class RepairController {
         log.info("param : {}", searchDto);
 
         long totalCnt = repairService.getRepairListCnt(searchDto);
-        PagingInfo pagingInfo = new PagingInfo(totalCnt, pageNum, 20);
+        PagingUtil pagingUtil = new PagingUtil(totalCnt, pageNum, 20);
 
-        model.addAttribute("pagingInfo", pagingInfo);
+        model.addAttribute("pagingInfo", pagingUtil);
         model.addAttribute("partnerList", partnerService.getPartnerList());
-        model.addAttribute("repairList", repairService.getRepairList(pagingInfo, searchDto));
+        model.addAttribute("repairList", repairService.getRepairList(searchDto, pagingUtil));
         return "prj/repair/repair_mng";
     }
 

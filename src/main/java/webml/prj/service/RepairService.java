@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webml.base.core.exception.MessageException;
 import webml.base.util.CustomMap;
-import webml.base.util.PagingInfo;
+import webml.base.util.PagingUtil;
 import webml.prj.dto.RepairDto;
 import webml.prj.dto.RepairSearchDto;
 import webml.prj.dto.StatisticsResponseDto;
@@ -36,8 +36,8 @@ public class RepairService {
         return repairRepository.countCond(searchDto);
     }
 
-    public List<RepairDto> getRepairList(PagingInfo pagingInfo, RepairSearchDto searchDto) {
-        return repairRepository.searchCond(pagingInfo, searchDto).stream().map(RepairDto::new).collect(Collectors.toList());
+    public List<RepairDto> getRepairList(RepairSearchDto searchDto, PagingUtil pagingUtil) {
+        return repairRepository.searchCond(searchDto, pagingUtil).stream().map(RepairDto::new).collect(Collectors.toList());
     }
 
     public RepairDto getRepairInfo(Long repairIdx) {
@@ -77,7 +77,7 @@ public class RepairService {
     }
 
     public List<CustomMap> downloadRepairList(RepairSearchDto searchDto) {
-        return repairRepository.searchDownloadExcel(searchDto).stream()
+        return repairRepository.searchCond(searchDto, null).stream()
                 .map(repair -> {
                     CustomMap tmpMap = new CustomMap();
                     tmpMap.put("receiveDt", repair.getReceiveDt());
@@ -89,8 +89,6 @@ public class RepairService {
                     return tmpMap;
                 }).collect(Collectors.toList());
     }
-
-
     public List<StatisticsResponseDto> statistics() {
         return repairRepository.statistics().stream().map(StatisticsResponseDto::new).collect(Collectors.toList());
     }

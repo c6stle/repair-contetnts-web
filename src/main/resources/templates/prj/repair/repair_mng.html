@@ -81,7 +81,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <p><code th:text="${pagingInfo.totalCnt}">0</code> 건</p>
+                        <p><code th:text="${pagingUtil.totalCnt}">0</code> 건</p>
                         <!-- Bordered Table -->
                         <table class="table table-hover" id="repairTable">
                             <colgroup>
@@ -129,19 +129,19 @@
                                 </li>
                                 <li class="page-item">
                                     <a class="page-link" aria-label="Previous" href="#">
-                                        <span aria-hidden="true" th:onclick="|fnSearch('@{${pagingInfo.prevGroupStartPageNum}}')|">&laquo;</span>
+                                        <span aria-hidden="true" th:onclick="|fnSearch('@{${pagingUtil.prevGroupStartPageNum}}')|">&laquo;</span>
                                     </a>
                                 </li>
-                                <li th:each="page : ${pagingInfo.list}" class="page-item">
-                                    <a th:class="${page eq pagingInfo.pageNum ? 'page-link active' : 'page-link'}" href="#" th:text="${page}" th:onclick="|fnSearch('@{${page}}')|"></a>
+                                <li th:each="page : ${pagingUtil.list}" class="page-item">
+                                    <a th:class="${page eq pagingUtil.pageNum ? 'page-link active' : 'page-link'}" href="#" th:text="${page}" th:onclick="|fnSearch('@{${page}}')|"></a>
                                 </li>
                                 <li class="page-item">
                                     <a class="page-link" aria-label="Next" href="#">
-                                        <span aria-hidden="true" th:onclick="|fnSearch('@{${pagingInfo.nextGroupStartPageNum}}')|">&raquo;</span>
+                                        <span aria-hidden="true" th:onclick="|fnSearch('@{${pagingUtil.nextGroupStartPageNum}}')|">&raquo;</span>
                                     </a>
                                 </li>
                                 <li class="page-item">
-                                    <a class="page-link" href="#" th:onclick="|fnSearch('@{${pagingInfo.lastGroupStartPageNum}}')|">Last</a>
+                                    <a class="page-link" href="#" th:onclick="|fnSearch('@{${pagingUtil.lastGroupStartPageNum}}')|">Last</a>
                                 </li>
                             </ul>
                         </nav>

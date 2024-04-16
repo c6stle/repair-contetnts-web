@@ -1,8 +1,15 @@
 spring:
-    application:
-        name: web-ml
     profiles:
         active: local
+
+---
+
+spring:
+    config:
+        activate:
+            on-profile: local
+    application:
+        name: web-ml
     datasource:
         url: jdbc:h2:tcp://localhost/~/webml
         username: sa
@@ -22,10 +29,40 @@ logging.level:
     org:
         hibernate.SQL: debug
 
-server.servlet.session.timeout: 1800
+server:
+    servlet:
+        session:
+            timeout: 1800
+            persistent: false
+---
 
+spring:
+    config:
+        activate:
+            on-profile: real
+    application:
+        name: web-ml
+    datasource:
+        url:
+        username:
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                #                show_sql: true
+                format_sql: true
+                user_sql_comment: true
+                default_batch_fetch_size: 10
+
+logging.level:
+    org:
+        hibernate.SQL: info
 
 server:
     servlet:
         session:
+            timeout: 1800
             persistent: false

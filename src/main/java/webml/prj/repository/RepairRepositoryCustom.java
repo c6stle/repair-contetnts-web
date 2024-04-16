@@ -1,7 +1,7 @@
 package webml.prj.repository;
 
 import com.querydsl.core.Tuple;
-import webml.base.util.PagingInfo;
+import webml.base.util.PagingUtil;
 import webml.prj.dto.RepairSearchDto;
 import webml.prj.entity.Repair;
 
@@ -13,7 +13,5 @@ public interface RepairRepositoryCustom {
 
     long countCond(RepairSearchDto searchDto);
 
-    List<Repair> searchCond(PagingInfo pagingInfo, RepairSearchDto searchDto);
-
-    List<Repair> searchDownloadExcel(RepairSearchDto searchDto);
+    List<Repair> searchCond(RepairSearchDto searchDto, PagingUtil pagingUtil);
 }

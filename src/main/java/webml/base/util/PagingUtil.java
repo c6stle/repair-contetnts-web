@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.ArrayList;
 
 @Data
-public class PagingInfo {
+public class PagingUtil {
     private long totalCnt;
     private int pageNum;
     private int pageSize;
@@ -17,7 +17,7 @@ public class PagingInfo {
     private int lastGroupStartPageNum;
     private ArrayList<Integer> list = null;
 
-    public PagingInfo(long totalCnt, int pageNum, int pageSize) {
+    public PagingUtil(long totalCnt, int pageNum, int pageSize) {
         this.totalCnt = totalCnt;
         this.pageNum = pageNum;
         this.pageSize = pageSize;

@@ -6,7 +6,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import webml.base.util.PagingInfo;
+import webml.base.util.PagingUtil;
 import webml.prj.dto.RepairSearchDto;
 import webml.prj.entity.QPartner;
 import webml.prj.entity.QRepair;
@@ -45,21 +45,24 @@ public class RepairRepositoryImpl implements RepairRepositoryCustom {
     }
 
     @Override
-    public List<Repair> searchCond(PagingInfo pagingInfo, RepairSearchDto searchDto) {
-        return jpaQueryFactory
-                .selectFrom(QRepair.repair)
-                .leftJoin(QRepair.repair.partner, QPartner.partner).fetchJoin()
-                .leftJoin(QRepair.repair.store, QStore.store).fetchJoin()
-                .where(partnerEq(searchDto.getPartnerIdx()),
-                        receiveDtBetween(searchDto.getBeginDt(), searchDto.getEndDt()))
-                .offset(pagingInfo.getOffset())
-                .limit(pagingInfo.getPageSize())
-                .orderBy(QRepair.repair.receiveDt.desc())
-                .fetch();
+    public List<Repair> searchCond(RepairSearchDto searchDto, PagingUtil pagingUtil) {
+        if (pagingUtil == null) {
+            return searchDownloadExcel(searchDto);
+        } else {
+            return jpaQueryFactory
+                    .selectFrom(QRepair.repair)
+                    .leftJoin(QRepair.repair.partner, QPartner.partner).fetchJoin()
+                    .leftJoin(QRepair.repair.store, QStore.store).fetchJoin()
+                    .where(partnerEq(searchDto.getPartnerIdx()),
+                            receiveDtBetween(searchDto.getBeginDt(), searchDto.getEndDt()))
+                    .offset(pagingUtil.getOffset())
+                    .limit(pagingUtil.getPageSize())
+                    .orderBy(QRepair.repair.receiveDt.desc())
+                    .fetch();
+        }
     }
 
-    @Override
-    public List<Repair> searchDownloadExcel(RepairSearchDto searchDto) {
+    private List<Repair> searchDownloadExcel(RepairSearchDto searchDto) {
         return jpaQueryFactory
                 .selectFrom(QRepair.repair)
                 .leftJoin(QRepair.repair.partner, QPartner.partner).fetchJoin()
